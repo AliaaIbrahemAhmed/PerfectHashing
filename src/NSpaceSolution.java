@@ -1,5 +1,6 @@
 import java.util.*;
 
+
 public class NSpaceSolution {
     private final int u = 32;
     private int n, b;
@@ -100,25 +101,17 @@ public class NSpaceSolution {
         }
         public void generateOutput(){
             ArrayList<Integer>[] firstLevel=  generateFirstLevel();
-
-
-            for (int i=0;i<n;i++) {
-                if (!firstLevel[i].isEmpty()) {
-                    Integer[] h = new Integer[firstLevel[i].size()];
-                    Object[] v = new Object[firstLevel[i].size()];
-                    v = firstLevel[i].toArray();
-                    System.arraycopy(v, 0, h, 0, v.length);
-                    int[] z = new int[firstLevel[i].size()];
-                    for (int k=0;k<h.length;k++) {
-                        System.out.println(h[k]);
-                    }
-                    NSquaredSpaceSolution x = new NSquaredSpaceSolution(z);
-
-                }
+                     for (int i=0 ;i< firstLevel.length;i++) {
+                         int newinput[] = new int[firstLevel[i].size()];
+                         if (!firstLevel[i].isEmpty()) {
+                             for (int j = 0; j < firstLevel[i].size(); j++) {
+                                 newinput[j] = firstLevel[i].get(j);
+                                 System.out.println(newinput[j]);
+                             }
+                             NSquaredSpaceSolution x = new NSquaredSpaceSolution(newinput);
+                         }
+                     }
             }
-
             }
-
-        }
 
 
