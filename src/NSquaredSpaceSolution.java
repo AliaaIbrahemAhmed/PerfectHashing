@@ -6,15 +6,15 @@ public class NSquaredSpaceSolution {
     private int n, b;
     private int[] output, S;
     private boolean[] isFull;
-    private Vector<int[][]> hashFunctions;
+    private int[][] hashFunction;
 
     public NSquaredSpaceSolution(int[] S) {
         this.n = S.length;
         this.S = S;
-        this.b = (int) Math.ceil(Math.log(n) / Math.log(2));
+        this.b = (int) Math.floor(Math.log(n * n) / Math.log(2));
         this.output = new int[n * n];
         this.isFull = new boolean[n * n];
-        this.hashFunctions = new Vector<>();
+        this.hashFunction = new int[b][u];
         generateOutput();
     }
 
@@ -23,9 +23,11 @@ public class NSquaredSpaceSolution {
         Random randNum = new Random();
         for (int i = 0; i < this.b; i++) {
             for (int j = 0; j < this.u; j++) {
-                int x = randNum.nextInt(3);
-                if (x % 2 == 0) h[i][j] = 0;
-                else h[i][j] = 1;
+                if (randNum.nextDouble() < 0.5) {
+                    h[i][j] = 0;
+                } else {
+                    h[i][j] = 1;
+                }
             }
         }
         return h;
@@ -46,11 +48,9 @@ public class NSquaredSpaceSolution {
         int[] res = new int[this.b];
         for (int i = 0; i < this.b; i++) {
             for (int j = 0; j < this.u; j++) {
-                if (h[i][j] * x[j] == 1) {
-                    res[i] = 1;
-                    break;
-                }
+                res[i] += h[i][j] * x[31 - j];
             }
+            res[i] %= 2;
         }
         return res;
     }
@@ -65,19 +65,21 @@ public class NSquaredSpaceSolution {
 
     private void generateOutput() {
         int i = 0;
-        int[][] h = generateRandomH();
-        this.hashFunctions.add(h);
+        this.hashFunction = generateRandomH();
         while (i < this.S.length) {
             int[] x = getBinaryRep(this.S[i]);
-            int[] binaryIndex = multiplyMatrices(h, x);
+            int[] binaryIndex = multiplyMatrices(this.hashFunction, x);
             int index = getIndex(binaryIndex);
             if (!this.isFull[index]) {
                 this.output[index] = this.S[i];
                 this.isFull[index] = true;
                 i++;
             } else {
-                h = generateRandomH();
-                this.hashFunctions.add(h);
+                System.out.println("collision");
+                this.hashFunction = generateRandomH();
+                this.output = new int[this.n * this.n];
+                this.isFull = new boolean[this.n * this.n];
+                i = 0;
             }
 
         }
@@ -87,14 +89,12 @@ public class NSquaredSpaceSolution {
         int index;
         int[] binaryInd;
         int[] x = getBinaryRep(element);
-        for (int[][] h : this.hashFunctions) {
-            binaryInd = multiplyMatrices(h, x);
-            index = getIndex(binaryInd);
-            if (this.output[index] == element && this.isFull[index]) return index;
-        }
+        binaryInd = multiplyMatrices(this.hashFunction, x);
+        index = getIndex(binaryInd);
+        if (this.output[index] == element && this.isFull[index]) return index;
         return -1;
     }
-
+/*
     public void insert(int element) {
         int[] newOutput = new int[(this.n + 1) * (this.n + 1)];
         boolean[] newIsFull = newIsFull = new boolean[(this.n + 1) * (this.n + 1)];
@@ -130,4 +130,6 @@ public class NSquaredSpaceSolution {
             this.isFull[index] = false;
         }
     }
+    */
+
 }
