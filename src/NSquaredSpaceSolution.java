@@ -1,10 +1,12 @@
 import java.util.Random;
+import java.util.Vector;
 
 public class NSquaredSpaceSolution {
     private final int u = 32;
     private int n, b;
     private int[] output, S;
     private boolean[] isFull;
+    private Vector<int[][]> hashFunctions;
 
     public NSquaredSpaceSolution(int[] S) {
         this.n = S.length;
@@ -12,6 +14,7 @@ public class NSquaredSpaceSolution {
         this.b = (int) Math.ceil(Math.log(n) / Math.log(2));
         this.output = new int[n * n];
         this.isFull = new boolean[n * n];
+        this.hashFunctions = new Vector<>();
         generateOutput();
     }
 
@@ -61,27 +64,70 @@ public class NSquaredSpaceSolution {
     }
 
     private void generateOutput() {
-        for (int i = 0; i < this.n; i++) {
-            boolean flag = false;
-            while (!flag) {
-                int[][] h = generateRandomH();
-                int[] x = getBinaryRep(this.S[i]);
-                int[] binaryIndex = multiplyMatrices(h, x);
-                int index = getIndex(binaryIndex);
-                if (!this.isFull[index]) {
-                    this.output[index] = this.S[i];
-                    this.isFull[index] = true;
-                    flag = true;
-                }
+        int i = 0;
+        int[][] h = generateRandomH();
+        this.hashFunctions.add(h);
+        while (i < this.S.length) {
+            int[] x = getBinaryRep(this.S[i]);
+            int[] binaryIndex = multiplyMatrices(h, x);
+            int index = getIndex(binaryIndex);
+            if (!this.isFull[index]) {
+                this.output[index] = this.S[i];
+                this.isFull[index] = true;
+                i++;
+            } else {
+                h = generateRandomH();
+                this.hashFunctions.add(h);
+            }
+
+        }
+    }
+
+    public int lookUp(int element) {
+        int index;
+        int[] binaryInd;
+        int[] x = getBinaryRep(element);
+        for (int[][] h : this.hashFunctions) {
+            binaryInd = multiplyMatrices(h, x);
+            index = getIndex(binaryInd);
+            if (this.output[index] == element && this.isFull[index]) return index;
+        }
+        return -1;
+    }
+
+    public void insert(int element) {
+        int[] newOutput = new int[(this.n + 1) * (this.n + 1)];
+        boolean[] newIsFull = newIsFull = new boolean[(this.n + 1) * (this.n + 1)];
+        int[][] h;
+        int size = this.hashFunctions.size();
+        System.arraycopy(this.output, 0, newOutput, 0, this.output.length);
+        System.arraycopy(this.isFull, 0, newIsFull, 0, this.isFull.length);
+        this.output = newOutput;
+        this.isFull = newIsFull;
+        if (size == 0) {
+            h = generateRandomH();
+            this.hashFunctions.add(h);
+        } else h = this.hashFunctions.get(size - 1);
+        while (true) {
+            int[] x = getBinaryRep(element);
+            int[] binaryIndex = multiplyMatrices(h, x);
+            int index = getIndex(binaryIndex);
+            if (!this.isFull[index]) {
+                this.output[index] = element;
+                this.isFull[index] = true;
+                break;
+            } else {
+                h = generateRandomH();
+                this.hashFunctions.add(h);
             }
         }
     }
 
-    public int lookUp(int element){
-        int index = 0;
-        
-
-        return index;
+    public void delete(int element) {
+        int index = this.lookUp(element);
+        if (index != -1) {
+            this.output[index] = 0;
+            this.isFull[index] = false;
+        }
     }
-
 }
