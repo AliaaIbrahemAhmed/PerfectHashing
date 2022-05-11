@@ -85,6 +85,7 @@ public class NSquaredSpaceSolution {
         }
     }
 
+
     public int lookUp(int element) {
         int index;
         int[] binaryInd;
@@ -120,6 +121,7 @@ public class NSquaredSpaceSolution {
                 h = generateRandomH();
                 this.hashFunctions.add(h);
             }
+
         }
     }
 
