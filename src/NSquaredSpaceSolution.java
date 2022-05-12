@@ -6,6 +6,7 @@ public class NSquaredSpaceSolution extends HashedSet {
     public NSquaredSpaceSolution(int[] S) {
         this.n = S.length;
         this.S = S;
+        this.counter=0;
         this.b = (int) Math.floor(Math.log(n * n) / Math.log(2));
         this.output = new int[n * n];
         this.isFull = new boolean[n * n];
@@ -25,6 +26,7 @@ public class NSquaredSpaceSolution extends HashedSet {
     private void generateOutput() {
         int i = 0;
         this.hashFunction = generateRandomH(this.b, this.u);
+
         while (i < this.S.length) {
             int[] x = getBinaryRep(this.S[i]);
             int[] binaryIndex = multiplyMatrices(this.hashFunction, x);
@@ -34,6 +36,7 @@ public class NSquaredSpaceSolution extends HashedSet {
                 this.isFull[index] = true;
                 i++;
             } else {
+                counter++;
                 this.hashFunction = generateRandomH(this.b, this.u);
                 this.output = new int[this.n * this.n];
                 this.isFull = new boolean[this.n * this.n];
@@ -41,6 +44,7 @@ public class NSquaredSpaceSolution extends HashedSet {
             }
 
         }
+
     }
 
 
