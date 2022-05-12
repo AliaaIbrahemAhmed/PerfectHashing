@@ -40,7 +40,7 @@ public class NSpaceSolution extends HashedSet {
                 int[] x = getBinaryRep(this.S[i]);
                 int[] binaryIndex = multiplyMatrices(hashFunction, x);
                 int index = getIndex(binaryIndex);
-                /**If there is no collision put this number in first level hash**/
+                /**If there is no collision put this number in first hash level**/
                 if (!this.isFull[index]) {
                     this.output[index] = this.S[i];
                     this.isFull[index] = true;
@@ -52,7 +52,7 @@ public class NSpaceSolution extends HashedSet {
         }
         return secondLevel;
     }
-       /**To generate second level Hash**/
+       /**To generate second Hash Level**/
     public void generateOutput() {
         ArrayList<Integer>[] firstLevel = generateFirstLevel();
         for (int i = 0; i < this.n; i++) {
