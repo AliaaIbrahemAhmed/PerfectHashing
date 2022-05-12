@@ -34,25 +34,29 @@ public class NSpaceSolution extends HashedSet {
     private ArrayList<Integer>[] generateFirstLevel() {
         /**...Generate Random Hash Function**/
         hashFunction = generateRandomH(this.b, this.u);
+        int counter=0;
         for (int i = 0; i < this.n; i++) {
             boolean flag = false;
+
             while (!flag) {
                 int[] x = getBinaryRep(this.S[i]);
                 int[] binaryIndex = multiplyMatrices(hashFunction, x);
                 int index = getIndex(binaryIndex);
-                /**If there is no collision put this number in first hash level**/
+                /**If there is no collision put this number in first level hash**/
                 if (!this.isFull[index]) {
                     this.output[index] = this.S[i];
                     this.isFull[index] = true;
                 } else { //else put the number made collision in array of number that made collision with the same number
                     this.secondLevel[index].add(this.S[i]);
+                    counter++;
                 }
                 flag = true;
             }
         }
+        System.out.println("collision in the first level "+counter);
         return secondLevel;
     }
-       /**To generate second Hash Level**/
+       /**To generate second level Hash**/
     public void generateOutput() {
         ArrayList<Integer>[] firstLevel = generateFirstLevel();
         for (int i = 0; i < this.n; i++) {
@@ -67,6 +71,7 @@ public class NSpaceSolution extends HashedSet {
                 this.HashFunctions[i].add(finalSolution.getHashFunction());
                 /**Store second Hash Table of Each Vector **/
                 secondHashTable[i].add(finalSolution.getOutput());
+                System.out.println("collision in the second level "+finalSolution.counter);
 
             }
         }
