@@ -63,8 +63,8 @@ public class NSpaceSolution {
     }
 
     private int[] multiplyMatrices(int[][] h /* (b * u) */, int[] x /* 32 */) {
-        int[] res = new int[this.b];
-        for (int i = 0; i < this.b; i++) {
+        int[] res = new int[h.length];
+        for (int i = 0; i < h.length; i++) {
             for (int j = 0; j < this.u; j++) {
                 res[i] += h[i][j] * x[31 - j];
             }
@@ -95,7 +95,6 @@ public class NSpaceSolution {
                     flag=true;
                 }
                 else {
-                    System.out.println(index);
                     this.secondlevel[index].add(this.S[i]);
                     flag=true;
                 }
@@ -107,46 +106,47 @@ public class NSpaceSolution {
             ArrayList<Integer>[] firstLevel=  generateFirstLevel();
                      for (int i=0 ;i<this.n;i++) {
                          int newinput[] = new int[firstLevel[i].size()];
-                         //System.out.println(firstLevel[i]);
+                         System.out.println(firstLevel[i]);
                          if (!firstLevel[i].isEmpty()) {
                              for (int j = 0; j < firstLevel[i].size(); j++) {
                                  newinput[j] = firstLevel[i].get(j);
-                                // System.out.println(newinput[j]);
-                              //   System.out.println("ll");
                              }
 
                               NSquaredSpaceSolution finalsolution = new NSquaredSpaceSolution(newinput);
                              this.HashFunctions[i].add(finalsolution.hashFunction);
-                             System.out.println(i+"y");
                              secondHashTable[i].add(finalsolution.output);
 
                          }
                      }
             }
-            public void lookup(int element){
+            public void lookup(int element) {
                 int index;
                 int[] binaryInd;
                 int[] x = getBinaryRep(element);
-                    binaryInd = multiplyMatrices(Hashfunction, x);
-                    index = getIndex(binaryInd);
-                //    System.out.println(index+"kkk");
-                    int []secondBinaryindex;
-               // System.out.println(this.output[index]);
-                    //System.out.println(this.HashFunctions[index]);
-                    if(!this.HashFunctions[index].isEmpty()){
+                binaryInd = multiplyMatrices(Hashfunction, x);
+                index = getIndex(binaryInd);
+                System.out.println(index + "kkk");
+                int[] secondBinaryindex;
+                if (this.output[index] == element) {
+                    System.out.println("buldum ilk hash :)");
+                } else {
+                    if (!this.HashFunctions[index].isEmpty()) {
                         System.out.println(HashFunctions[index]);
-                        secondBinaryindex=multiplyMatrices(this.HashFunctions[index].get(0),x);
-                        int secondindex=getIndex(secondBinaryindex);
-                        int[] out=secondHashTable[index].get(0);
-                        if(out[secondindex]==element){
-                               System.out.println("boldum");
+
+                        secondBinaryindex = multiplyMatrices(this.HashFunctions[index].get(0), x);
+                        int secondindex = getIndex(secondBinaryindex);
+                        int[] out = secondHashTable[index].get(0);
+                        if (out[secondindex] == element) {
+                            System.out.println("buldum ikinci hash :)");
+                        } else {
+                            System.out.println("sorry doesn't exist :(");
                         }
-                        }
-                    else if(this.output[index]==element){
-                        System.out.println("no collision");
                     }
-                    }
+
+
+                }
             }
+}
 
 
 
