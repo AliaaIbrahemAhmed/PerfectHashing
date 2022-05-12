@@ -6,6 +6,7 @@ public abstract class HashedSet {
     protected int[] output, S;
     protected int[][] hashFunction;
     protected boolean[] isFull;
+   protected int counter;
 
     protected static int[][] generateRandomH(int b, int u) {
         int[][] h = new int[b][u];
