@@ -88,9 +88,11 @@ public class NSpaceSolution extends HashedSet {
                     System.out.println("Not Found!");
                 }
             }
+            else{
+                System.out.println("Not Found!");
+            }
         }
     }
 }
-
 
 
