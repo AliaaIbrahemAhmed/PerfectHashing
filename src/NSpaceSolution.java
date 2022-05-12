@@ -15,7 +15,7 @@ public class NSpaceSolution extends HashedSet {
         this.secondLevel = new ArrayList[n];
         this.isFull = new boolean[n];
         this.HashFunctions = new ArrayList[n];
-        this.hashFunctionOfMethod2 = new int[this.b][this.u];
+        this.hashFunction = new int[this.b][this.u];
         this.secondHashTable = new ArrayList[n];
         for (int i = 0; i < n; i++) {
             secondLevel[i] = new ArrayList<>();
@@ -33,12 +33,12 @@ public class NSpaceSolution extends HashedSet {
 
     private ArrayList<Integer>[] generateFirstLevel() {
         /**...Generate Random Hash Function**/
-        hashFunctionOfMethod2 = generateRandomH(this.b, this.u);
+        hashFunction = generateRandomH(this.b, this.u);
         for (int i = 0; i < this.n; i++) {
             boolean flag = false;
             while (!flag) {
                 int[] x = getBinaryRep(this.S[i]);
-                int[] binaryIndex = multiplyMatrices(hashFunctionOfMethod2, x);
+                int[] binaryIndex = multiplyMatrices(hashFunction, x);
                 int index = getIndex(binaryIndex);
                 /**If there is no collision put this number in first level hash**/
                 if (!this.isFull[index]) {
@@ -76,7 +76,7 @@ public class NSpaceSolution extends HashedSet {
         int i;
         int[] binaryInd;
         int[] x = getBinaryRep(element);
-        binaryInd = multiplyMatrices(hashFunctionOfMethod2, x);
+        binaryInd = multiplyMatrices(hashFunction, x);
         i = getIndex(binaryInd); // i=h(x)
         int[] secondBinaryIndex;
         /**check if the element in the first hash level**/
