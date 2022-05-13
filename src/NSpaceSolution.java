@@ -16,15 +16,16 @@ public class NSpaceSolution extends HashedSet {
         this.isFull = new boolean[n];
         this.HashFunctions = new ArrayList[n];
         this.hashFunction = new int[this.b][this.u];
-        this.secondHashTable = new ArrayList[n];
+        this.sum=0;
+        this.secondHashTable=new ArrayList[n];
         for (int i = 0; i < n; i++) {
             secondLevel[i] = new ArrayList<>();
         }
         for (int i = 0; i < n; i++) {
             HashFunctions[i] = new ArrayList<>();
         }
-        for (int i = 0; i < n; i++) {
-            secondHashTable[i] = new ArrayList<>();
+        for (int i=0;i<n;i++){
+            secondHashTable[i]=new ArrayList<>();
         }
         generateOutput();
 
@@ -34,26 +35,19 @@ public class NSpaceSolution extends HashedSet {
     private ArrayList<Integer>[] generateFirstLevel() {
         /**...Generate Random Hash Function**/
         hashFunction = generateRandomH(this.b, this.u);
-        int counter=0;
         for (int i = 0; i < this.n; i++) {
-            boolean flag = false;
-
-            while (!flag) {
                 int[] x = getBinaryRep(this.S[i]);
                 int[] binaryIndex = multiplyMatrices(hashFunction, x);
                 int index = getIndex(binaryIndex);
-                /**If there is no collision put this number in first level hash**/
-                if (!this.isFull[index]) {
-                    this.output[index] = this.S[i];
-                    this.isFull[index] = true;
-                } else { //else put the number made collision in array of number that made collision with the same number
                     this.secondLevel[index].add(this.S[i]);
-                    counter++;
-                }
-                flag = true;
+        }
+        for (int i=0;i<this.n;i++) {
+            if (!this.secondLevel[i].isEmpty()) {
+                sum += secondLevel[i].size() * secondLevel[i].size();
             }
         }
-        System.out.println("collision in the first level "+counter);
+        System.out.println("Total space "+this.sum);
+
         return secondLevel;
     }
        /**To generate second level Hash**/
@@ -71,7 +65,11 @@ public class NSpaceSolution extends HashedSet {
                 this.HashFunctions[i].add(finalSolution.getHashFunction());
                 /**Store second Hash Table of Each Vector **/
                 secondHashTable[i].add(finalSolution.getOutput());
-                System.out.println("collision in the second level "+finalSolution.counter);
+                System.out.println("in table number "+i);
+                finalSolution.printHashTable();
+                System.out.println("Number Of Times Required to Rebuild Hash Table (collision) = "+finalSolution.counter);
+                System.out.println("_____________________________");
+
 
             }
         }
@@ -85,15 +83,13 @@ public class NSpaceSolution extends HashedSet {
         i = getIndex(binaryInd); // i=h(x)
         int[] secondBinaryIndex;
         /**check if the element in the first hash level**/
-        if (this.output[i] == element) {
-            System.out.println("Found in first level.");
-        } else {//if not check in the second hash level
+         //if not check in the second hash level
             if (!this.HashFunctions[i].isEmpty()) {
                 secondBinaryIndex = multiplyMatrices(this.HashFunctions[i].get(0)/*hi*/, x);//hi(x)
                 int secondIndex = getIndex(secondBinaryIndex);
                 int[] out = secondHashTable[i].get(0);//Ai
                 if (out[secondIndex] == element) {//Ai[hi(x)]
-                    System.out.println("Found in second level.");
+                    System.out.println("Number "+element+" Found In Hash Table Number "+i+" At Index "+secondIndex);
                 } else {
                     System.out.println("Not Found!");
                 }
@@ -103,6 +99,6 @@ public class NSpaceSolution extends HashedSet {
             }
         }
     }
-}
+
 
 
