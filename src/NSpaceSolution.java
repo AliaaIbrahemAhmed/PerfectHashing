@@ -2,7 +2,7 @@ import java.util.*;
 
 
 public class NSpaceSolution extends HashedSet {
-
+    private int sum;
     private final ArrayList<Integer>[] secondLevel;
     private ArrayList<int[][]>[] HashFunctions;
     private ArrayList<int[]>[] secondHashTable;
@@ -67,7 +67,7 @@ public class NSpaceSolution extends HashedSet {
                 secondHashTable[i].add(finalSolution.getOutput());
                 System.out.println("in table number "+i);
                 finalSolution.printHashTable();
-                System.out.println("Number Of Times Required to Rebuild Hash Table (collision) = "+finalSolution.counter);
+                System.out.println("Number Of Times Required to Rebuild Hash Table (collision) = "+finalSolution.getCollisions());
                 System.out.println("_____________________________");
 
 

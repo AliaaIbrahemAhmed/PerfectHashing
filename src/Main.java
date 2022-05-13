@@ -1,18 +1,23 @@
+import java.util.Arrays;
+import java.util.Scanner;
+
 public class Main {
     public static void main(String[] args) {
-        int[] S = new int[]{1, 2, 3, 4, 5, 6, 7,8,9,10,50,60,70,80,100,1000,10000};
-        NSquaredSpaceSolution nSquaredSpaceSolution = new NSquaredSpaceSolution(S);
-        System.out.println("number of rebuild hash of method 1= "+nSquaredSpaceSolution.counter);
-        NSpaceSolution nSpaceSolution = new NSpaceSolution(S);
-        for(int i : S){
-            nSquaredSpaceSolution.lookUp(i);
-            nSpaceSolution.lookUp(i);
+        Scanner sc = new Scanner(System.in);
+        System.out.println("Enter the size of the array");
+        int n = sc.nextInt();
+        int[] S = new int[n];
+        System.out.println("Enter the values of the array");
+        for (int i = 0; i < n; i++) {
+            S[i] = sc.nextInt();
         }
-        nSquaredSpaceSolution.lookUp(100);
-        nSpaceSolution.lookUp(100);
-        nSquaredSpaceSolution.lookUp(22);
-        nSpaceSolution.lookUp(22);
-
+        S = Arrays.stream(S).distinct().toArray();
+        NSquaredSpaceSolution nSquaredSpaceSolution = new NSquaredSpaceSolution(S);
+        System.out.println("First Method: ");
+        System.out.println("number of rebuild hash of method 1 = " + nSquaredSpaceSolution.getCollisions());
+        nSquaredSpaceSolution.printHashTable();
+        System.out.println("Second Method: ");
+        NSpaceSolution nSpaceSolution = new NSpaceSolution(S);
 
     }
 }

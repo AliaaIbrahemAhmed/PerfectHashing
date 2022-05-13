@@ -2,11 +2,12 @@ import java.util.Random;
 import java.util.Vector;
 
 public class NSquaredSpaceSolution extends HashedSet {
+    private int collisions;
 
     public NSquaredSpaceSolution(int[] S) {
         this.n = S.length;
         this.S = S;
-        this.counter=0;
+        this.collisions=0;
         this.b = (int) Math.floor(Math.log(n * n) / Math.log(2));
         this.output = new int[n * n];
         this.isFull = new boolean[n * n];
@@ -22,6 +23,9 @@ public class NSquaredSpaceSolution extends HashedSet {
         return hashFunction;
     }
 
+    public int getCollisions() {
+        return collisions;
+    }
 
     private void generateOutput() {
         int i = 0;
@@ -36,7 +40,7 @@ public class NSquaredSpaceSolution extends HashedSet {
                 this.isFull[index] = true;
                 i++;
             } else {
-                counter++;
+                collisions++;
                 this.hashFunction = generateRandomH(this.b, this.u);
                 this.output = new int[this.n * this.n];
                 this.isFull = new boolean[this.n * this.n];
@@ -45,6 +49,13 @@ public class NSquaredSpaceSolution extends HashedSet {
 
         }
 
+    }
+    protected void printHashTable() {
+        for (int i = 0; i < this.output.length; i++) {
+            if (isFull[i]) {
+                System.out.println("The value " + this.output[i] + " is hashed into index " + i);
+            }
+        }
     }
 
 
